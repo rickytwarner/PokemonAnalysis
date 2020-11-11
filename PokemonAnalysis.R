@@ -40,3 +40,33 @@ for (i in seq_along(GenArray)) {
   PokemonList.v9[, i] <- paste(GenArray[i], PokemonList.v9[, i], sep = "-")
 }
 
+PokemonList.v10 <- as_tibble(PokemonList.v9)
+
+PokemonList.v11 <- PokemonList.v10$Generation.I
+
+PokemonList.v12 <- PokemonList.v10 %>%
+  select(-Generation.I)
+
+PokemonList.v13 <- as.data.frame(PokemonList.v11)
+
+GenArray <- colnames(PokemonList.v12)
+
+
+
+for (i in seq_along(GenArray)) {
+  print(GenArray[i])
+  ListLoad <- as.data.frame(PokemonList.v12[, i])
+  colnames(ListLoad) <- "PokemonList.v11"
+  PokemonList.v13 <- rbind(PokemonList.v13, ListLoad)
+}
+
+colnames(PokemonList.v13) <- "value"
+
+PokemonList.v14 <- PokemonList.v13 %>%
+  filter(!str_detect(value, "No additional Pokémon"))
+
+PokemonList.v15 <- PokemonList.v14 %>%
+  separate(value, c("Generation", "ID", "Pokemon"), "-")
+
+str_replace(PokemonList.v15$ID, "^0+", "")
+  
