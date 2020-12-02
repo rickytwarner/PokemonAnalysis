@@ -83,13 +83,13 @@ len <- nrow(PokemonList.v15)
 PokemonList.v16 <- PokemonList.v15
 
 PokeApiMaster <- read.table(text = "", 
-                            col.names = c("ID", "Pokemon", "Abilities", "BaseExperience", "Height", "Moves", "HP", "Attack", "Defense", "SpecialAttack", "SpecialDefense", "Speed"))
+                            col.names = c("ID", "Pokemon", "Abilities", "BaseExperience", "Height", "Moves", "HP", "Attack", "Defense", "SpecialAttack", "SpecialDefense", "Speed", "Type1", "Type2", "Weight"))
   
 
 
 for (i in 1:len) {
   print(i)
-  url = paste(req, i, sep="")
+  url <- paste(req, i, sep="")
   res <- GET(url)
   res.json <- rawToChar(res$content)
   data <- fromJSON(res.json)
@@ -167,13 +167,18 @@ for (i in 1:len) {
                 filter(slot == 1) %>%
                 select(type.name) # Final Product 
   
-  Type1.v1 <- types %>%
+  Type2.v1 <- types %>%
                 filter(slot == 2) %>%
                 select(type.name) # Final Product 
   
+  if (lengths(Type2.v1, use.names = TRUE) == 0){
+    Type2.v1 <- "None"
+  }
+  
+  
   Weight <- data$weight
   
-  PokeApiData.v1 <- c(i, abilities.v4, BaseExperience, Height, moves.v3, hp.v2, attack.v2, defense.v2, SpecialAttack.v2, SpecialDefense.v2, Speed.v2)
+  PokeApiData.v1 <- c(i, abilities.v4, BaseExperience, Height, moves.v3, hp.v2, attack.v2, defense.v2, SpecialAttack.v2, SpecialDefense.v2, Speed.v2, Type1.v1, Type2.v1, Weight)
   
   PokeApiData.v2 <- as.data.frame(PokeApiData.v1)
   
@@ -190,14 +195,16 @@ for (i in 1:len) {
       SpecialAttack = PokeApiData.v2[, 9],
       SpecialDefense = PokeApiData.v2[, 10],
       Speed = PokeApiData.v2[, 11],
-      
+      Type1 = PokeApiData.v2[, 12],
+      Type2 = PokeApiData.v2[, 13],
+      Weight = PokeApiData.v2[, 14]
     ) %>% head(1)
   
   PokeApiData.v4 <- PokeApiData.v3 %>%
     mutate(ID = gsub(",.*", "", ID))
   
   PokeApiMaster <- rbind(PokeApiMaster, PokeApiData.v4)
-  Sys.sleep(5)
+  Sys.sleep(10)
 }
 
 PokemonList.v17 <- PokemonList.v16 %>%
@@ -205,7 +212,7 @@ PokemonList.v17 <- PokemonList.v16 %>%
 
 SourcePath <- str_remove(getActiveDocumentContext()$path, "PokemonAnalysis.R")
 
-FilePath <- paste(path, "/PokemonMasterList.csv", sep = "")
+FilePath <- paste(SourcePath, "PokemonMasterList.csv", sep = "")
 
 if (file.exists(FilePath)) {
   file.remove(FilePath)
