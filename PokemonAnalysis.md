@@ -30,10 +30,11 @@ that to help me design a perfect team? And so, after a bit of work, the
 following analysis was born.
 
 The list of pokemon used in this analysis was pulled from Wikipedia’s
-list of pokemon (url: ). The additional info (moves, stats, weight) was
-gathered from the PokeApi (url: ) If you are interested in viewing the
-code that I used to compile the dataset, please check
-[here](insert%20link%20when%20you%20upload%20to%20github).
+list of [Pokemon](https://en.wikipedia.org/wiki/List_of_Pok%C3%A9mon).
+The additional info (moves, stats, weight) was gathered from the
+[PokeApi](https://pokeapi.co/) If you are interested in viewing the code
+that I used to compile the dataset, please check
+[here](https://github.com/rickytwarner/PokemonAnalysis/blob/master/PokemonAnalysis.R).
 
 Note: While my code is set up to grab data on all pokemon from
 generations 1-8. As of 12.1.2020, a lot of Gen 8 data is missing from
